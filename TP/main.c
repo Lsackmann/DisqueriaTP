@@ -27,6 +27,7 @@ typedef struct
 	int precio;
 }	strEstructura; 
 
+
 //------------------------------ CARGA ----------------------------------------------//
 bool chequeo_salida(strEstructura vector[], int i)  //Funcion usada para chequear el ingreso del usuario
 {	
@@ -211,6 +212,8 @@ void mostrar_datos(strEstructura vector[], int pos, char *mensaje)
 	printf ("\n El numero de tracks del disco de %s es : %d . \n", mensaje, vector[pos].tracks);
 	//precio
 	printf("\n El precio del disco %s es :%d.\n", mensaje, vector[pos].precio);
+	
+	printf("\n Estos fueron todos los datos para el campo solicitado\n");
 	return;
 }
 //------------------------------MOSTRAR  ----------------------------------------------//}
@@ -221,21 +224,22 @@ void ordenar_vector(strEstructura vector[], int largo_vector)
 {
 	
 	int i=0;
-	int j,aux ;
+	int j;
+	strEstructura aux ;
 	bool cambio=true;
 	
 	while (i<=largo_vector-1 && cambio)
 	{	
 		cambio=false;
 		
-		for (j=0; j<=largo_vector-i; j++)
+		for (j=0; j<largo_vector-i; j++)
 			{
 			if (vector[j].cod > vector[j+1].cod)
 				{	
 					cambio=true;
-					aux= vector[j].cod ;
-					vector[j].cod=vector[j+1].cod;
-					vector[j+1].cod= aux;
+					aux= vector[j] ;
+					vector[j]=vector[j+1];
+					vector[j+1]= aux;
 				}		
 			
 			}	
@@ -259,23 +263,25 @@ void mostrar_datos_vector_ordenado(strEstructura vector[], int largo_vector)
 //------------------------------ ORDENAMIENTO  ----------------------------------------------//
 
 //------------------------------ BUSQUEDA BINARIA ----------------------------------------------//
-/*int ingreso_busqueda_binaria(strEstructura vector[], int largo_vector)
+int ingreso_busqueda_binaria(strEstructura vector[], int largo_vector)
 {
 	int inf=0;
 	int sup=largo_vector;
-	int centro= (inf+sup)/2;
+	int centro;
 	int dato;
 	
 	printf("Por favor, ingrese el numero a buscar: \n");
-	scanf("%d", dato);
+	scanf("%d", &dato);
 	
 	
 	while (inf <= sup)
 	{
+		centro= (inf+sup)/2;
+		
 		if ((vector[centro].cod)==dato)
 		{	
-			printf ("\n El dato fue encontrado y su informacion es:  \n");
-			mostrar_datos(vector, centro, "solicitado" );
+			printf("El valor fue encontrado, y su información es: ");
+			mostrar_datos(vector, centro , "buscado");
 			return centro;
 		}
 		else
@@ -290,7 +296,7 @@ void mostrar_datos_vector_ordenado(strEstructura vector[], int largo_vector)
 	
 	printf("El valor no fue encontrado");
 	return 0;
-}*/
+}
 
 
 //------------------------------BUSQUEDA BINARIA  ----------------------------------------------//
@@ -298,25 +304,21 @@ void mostrar_datos_vector_ordenado(strEstructura vector[], int largo_vector)
 
 //------------------------------ MAIN ----------------------------------------------//
 int main()
-{	int largoVector, posMaximo, posMinimo, precioPromedio, i;
+{	int largoVector, posMaximo, posMinimo, precioPromedio, i, datoBuscado;
 	
 	strEstructura vector[500];
 	
 	largoVector=carga(vector);
 	
-	for (i=0; i<largoVector; i++)
-	{
-		printf("Codigo del vector en la posicion %d:: %d \n", i, vector[i].precio);
-	}
 	
 	precioPromedio= precio_promedio(vector, largoVector);
 	
-	printf("\n El precio promedio de los discos es de: %d.", precioPromedio);
+	printf("\n El precio promedio de los discos es de: %d. \n", precioPromedio);
 	system("pause");
 	
 	posMaximo= pos_maximo(vector, largoVector);
 	
-	printf("\n La posicion maxima es: %d.Sus datos son: \n", posMaximo);
+	printf("\n Los datos del valor maximo son:  \n");
 	//muestra los datos del precio maximo
 	mostrar_datos(vector, posMaximo, "de precio maximo");	
  	
@@ -324,7 +326,7 @@ int main()
 	
 	posMinimo= pos_minimo(vector, largoVector);
 	
-	printf("\n La posicion del minimo es: %d \n", posMinimo);
+	printf("\n Los datos del valor minimo son:  \n");
 	
 	//muestra los datos del precio minimo
 	mostrar_datos(vector, posMinimo, "de precio minimo"); 	
@@ -341,7 +343,8 @@ int main()
  	system("pause");
 	
 	
-	//ingreso_busqueda_binaria(vector, largoVector);
+	datoBuscado=ingreso_busqueda_binaria(vector, largoVector);
+	
 	
 	
 	return 0;
